@@ -1,6 +1,3 @@
-````markdown
-
-
 ## React Interview Challenge #02
 
 Este repositório contém a resolução do desafio de formulário de login proposto pelo canal do [fernandev](https://www.youtube.com/@fernandev), utilizando React e os conceitos de componentes controlados e promessas.

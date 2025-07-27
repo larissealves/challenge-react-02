@@ -1,6 +1,6 @@
-import { login } from './utils';
-import './index.css';
-import { useState } from 'react';
+import { login } from "./utils";
+import "./index.css";
+import { useState } from "react";
 
 // Instruções:
 // * Você tem um formulário de login INCOMPLETO
@@ -15,23 +15,74 @@ import { useState } from 'react';
 // todo - Mostre um alerta caso o login seja efetuado com sucesso (javascript alert). Investigue a função login() para entender como ter sucesso na requisição.
 
 export default function LoginForm() {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+
+  const [error, setError ] =  useState('');
+  const [isLoading, setIsLoading] = useState(false);
+
+  const handleLogin = (() => {
+    setIsLoading(true);
+
+    login({email: email, password: password})
+      .then(()=> {
+        alert('Login realizado com sucesso!')
+
+        setEmail("");
+        setPassword("");
+      })
+      .catch((err)=>{
+        setError('Não foi possivel realizar o login :(');
+      })
+      .finally(() => {
+        setEmail("");
+        setPassword("");
+        setIsLoading(false);
+      });
+  });
+
   return (
-    <div className='wrapper'>
-      <div className='login-form'>
+    <div className="wrapper">
+      <div className="login-form">
         <h1>Login Form 🐞</h1>
         {/* Coloque a mensagem de erro de login na div abaixo. Mostre a div somente se houver uma mensagem de erro. */}
-        <div className='errorMessage'></div>
-        <div className='row'>
-          <label htmlFor={'email'}>Email</label>
-          <input id={'email'} type={'email'} autoComplete='off' />
+        {error && 
+          <div className="errorMessage">
+            {error}
+          </div>
+        } 
+        <div className="row">
+          <label htmlFor={"email"}>Email</label>
+          <input
+            id={"email"}
+            type={"email"}
+            value={email}
+            autoComplete="off"
+            onChange={(e) => {
+              setEmail(e.target.value),
+              setError("")
+            }}
+          />
         </div>
-        <div className='row'>
-          <label htmlFor={'password'}>Password</label>
-          <input id={'password'} type={'password'} />
+        <div className="row">
+          <label htmlFor={"password"}>Password</label>
+          <input
+            id={"password"}
+            type={"password"}
+            value={password}
+            onChange={(e) => {
+              setPassword(e.target.value),
+              setError("")
+            }}
+          />
         </div>
 
-        <div className='button'>
-          <button>Login</button>
+        <div className="button">
+          <button disabled={email && password.length >= 6 && isLoading === false ? "" : "disabled"}
+            onClick={handleLogin}
+          >
+            Login
+          </button>
         </div>
       </div>
     </div>
